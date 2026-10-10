@@ -60,8 +60,6 @@ All testbench signals are driven on the **falling clock edge** and ready/valid f
 
 ## Design under test
 
-The bridge comes from the PULP platform (ETH Zurich / University of Bologna, Solderpad License 0.51).
-
 | File | Description |
 |------|-------------|
 | `axi2apb.sv` | 32-bit AXI to 32-bit APB bridge (single-beat only) |
