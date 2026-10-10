@@ -158,5 +158,5 @@ These come from reading the RTL and are not checked by the current test:
 ---
 
 ## License
-
-The RTL is from the PULP platform under the Solderpad Hardware License v0.51 (see headers in `rtl/`). Add your own license for the verification code.
+Mazy se use kro.....
+Free for all.......
