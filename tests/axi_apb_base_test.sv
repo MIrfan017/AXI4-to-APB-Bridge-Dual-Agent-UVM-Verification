@@ -1,4 +1,4 @@
-// Base test: gets the virtual interfaces from config_db, builds the configs and the env.
+// Base test: gets the virtual interfaces from config_db, builds the configs and the env
 class axi_apb_base_test extends uvm_test;
 
   `uvm_component_utils(axi_apb_base_test)
