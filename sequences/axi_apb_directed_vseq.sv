@@ -1,4 +1,4 @@
-// Directed scenario list for the AXI -> APB bridge (single-beat transfers).
+// Directed scenario list for the AXI -> APB bridge (single-beat transfers)
 // All expected values are written out explicitly.
 class axi_apb_directed_vseq extends axi_apb_base_vseq;
 
