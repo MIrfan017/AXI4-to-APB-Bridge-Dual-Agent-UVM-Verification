@@ -1,4 +1,4 @@
-// Directed test: runs the directed virtual sequence once.
+// Directed test: runs the directed virtual sequence once
 class axi_apb_directed_test extends axi_apb_base_test;
 
   `uvm_component_utils(axi_apb_directed_test)
