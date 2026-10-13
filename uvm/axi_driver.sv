@@ -39,6 +39,8 @@ class axi_driver extends uvm_driver #(axi_seq_item);
   endtask
 
   // ---------------------------------------------------------------- write ----
+  // Rule used everywhere: drive at negedge, sample ready/valid at posedge.
+  // The handshake happens AT the posedge where valid && ready are both 1.
   task drive_write(axi_seq_item t);
     fork
       begin : aw_channel
@@ -49,7 +51,7 @@ class axi_driver extends uvm_driver #(axi_seq_item);
         vif.aw_size  <= t.size;
         vif.aw_burst <= t.burst;
         vif.aw_valid <= 1'b1;
-        while (vif.aw_ready !== 1'b1) @(negedge vif.clk);
+        do @(posedge vif.clk); while (vif.aw_ready !== 1'b1);  // handshake edge
         @(negedge vif.clk);
         vif.aw_valid <= 1'b0;
       end
@@ -59,16 +61,16 @@ class axi_driver extends uvm_driver #(axi_seq_item);
         vif.w_strb   <= t.strb;
         vif.w_last   <= 1'b1;
         vif.w_valid  <= 1'b1;
-        while (vif.w_ready !== 1'b1) @(negedge vif.clk);
+        do @(posedge vif.clk); while (vif.w_ready !== 1'b1);   // handshake edge
         @(negedge vif.clk);
         vif.w_valid  <= 1'b0;
       end
     join
     repeat (t.resp_delay) @(negedge vif.clk);
     vif.b_ready <= 1'b1;
-    while (vif.b_valid !== 1'b1) @(negedge vif.clk);
-    t.resp    <= vif.b_resp;      // captured before the handshake edge
-    t.resp_id <= vif.b_id;
+    do @(posedge vif.clk); while (vif.b_valid !== 1'b1);       // handshake edge
+    t.resp    = vif.b_resp;     // sampled on the handshake edge
+    t.resp_id = vif.b_id;
     @(negedge vif.clk);
     vif.b_ready <= 1'b0;
   endtask
@@ -82,16 +84,16 @@ class axi_driver extends uvm_driver #(axi_seq_item);
     vif.ar_size  <= t.size;
     vif.ar_burst <= t.burst;
     vif.ar_valid <= 1'b1;
-    while (vif.ar_ready !== 1'b1) @(negedge vif.clk);
+    do @(posedge vif.clk); while (vif.ar_ready !== 1'b1);      // handshake edge
     @(negedge vif.clk);
     vif.ar_valid <= 1'b0;
     repeat (t.resp_delay) @(negedge vif.clk);
     vif.r_ready <= 1'b1;
-    while (vif.r_valid !== 1'b1) @(negedge vif.clk);
-    t.data    <= vif.r_data;
-    t.resp    <= vif.r_resp;
-    t.last    <= vif.r_last;
-    t.resp_id <= vif.r_id;
+    do @(posedge vif.clk); while (vif.r_valid !== 1'b1);       // handshake edge
+    t.data    = vif.r_data;
+    t.resp    = vif.r_resp;
+    t.last    = vif.r_last;
+    t.resp_id = vif.r_id;
     @(negedge vif.clk);
     vif.r_ready <= 1'b0;
   endtask
