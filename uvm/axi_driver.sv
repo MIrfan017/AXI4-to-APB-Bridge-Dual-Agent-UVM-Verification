@@ -65,12 +65,12 @@ class axi_driver extends uvm_driver #(axi_seq_item);
       end
     join
     repeat (t.resp_delay) @(negedge vif.clk);
-    vif.b_ready = 1'b1;
+    vif.b_ready <= 1'b1;
     while (vif.b_valid !== 1'b1) @(negedge vif.clk);
-    t.resp    = vif.b_resp;      // captured before the handshake edge
-    t.resp_id = vif.b_id;
+    t.resp    <= vif.b_resp;      // captured before the handshake edge
+    t.resp_id <= vif.b_id;
     @(negedge vif.clk);
-    vif.b_ready = 1'b0;
+    vif.b_ready <= 1'b0;
   endtask
 
   // ----------------------------------------------------------------- read ----
@@ -84,7 +84,7 @@ class axi_driver extends uvm_driver #(axi_seq_item);
     vif.ar_valid <= 1'b1;
     while (vif.ar_ready !== 1'b1) @(negedge vif.clk);
     @(negedge vif.clk);
-    vif.ar_valid = 1'b0;
+    vif.ar_valid <= 1'b0;
     repeat (t.resp_delay) @(negedge vif.clk);
     vif.r_ready <= 1'b1;
     while (vif.r_valid !== 1'b1) @(negedge vif.clk);
